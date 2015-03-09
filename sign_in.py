@@ -1,6 +1,8 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import os, cgi, Cookie
+import os
+import cgi
+import Cookie
 import lib
 from user import User
 cookie = Cookie.SimpleCookie()

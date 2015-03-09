@@ -1,12 +1,17 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import cgi, Cookie, os
-import cgitb; cgitb.enable()
+import os
+import cgi
+import Cookie
+import cgitb
 import lib
 from user import User
 
+cgitb.enable()
+
 cookie = Cookie.SimpleCookie()
 string_cookie = os.environ.get('HTTP_COOKIE')
+
 
 def sign_in():
     print "Status: 303 See other"
@@ -56,7 +61,7 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     """ % (user.email, user.get_avatar())
 elif os.environ['REQUEST_METHOD'] == 'POST':
     form = cgi.FieldStorage()
-    if not form.has_key('avatar'):
+    if 'avatar' not in form:
         message = 'No file was selected'
     else:
         fileitem = form['avatar']

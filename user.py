@@ -1,13 +1,21 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import sha, random, string, sys, re, hashlib, os
+import os
+import sys
+import sha
+import random
+import string
+import re
+import hashlib
 from lib import db_config as config
+
 
 class User():
     """docstring for User"""
     def __init__(self):
         import MySQLdb as mdb
-        self.db = mdb.connect(config['host'],
+        self.db = mdb.connect(
+            config['host'],
             config['user'],
             config['password'],
             config['db'])
@@ -45,7 +53,7 @@ class User():
                 return self
         else:
             return None
-    
+
     def create(self, email, password):
         if len(password) < 6:
             return "Password too short"
@@ -54,10 +62,11 @@ class User():
         elif self.find_by_email(email):
             return "Email %s has been registered" % email
         else:
-            salt = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            strs = string.ascii_uppercase + string.digits
+            salt = ''.join(random.choice(strs) for _ in range(10))
             token = sha.new(salt + password).hexdigest()
-            sql = "insert into user (email, salt, token) values ('%s', '%s', '%s')" \
-                % (email, salt, token)
+            sql = "insert into user (email, salt, token) " \
+                  "values ('%s', '%s', '%s')" % (email, salt, token)
             self.cur.execute(sql)
             self.db.commit()
             self.id = self.cur.lastrowid

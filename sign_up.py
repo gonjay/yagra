@@ -1,6 +1,8 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import os, cgi, Cookie, sha
+import os
+import cgi
+import Cookie
 import lib
 from user import User
 
@@ -51,7 +53,7 @@ elif os.environ['REQUEST_METHOD'] == 'POST':
         print cookie
         print "Status: 303 See other"
         print "Location: /cgi-bin/yagra.py"
-        print # to end the CGI response headers.
+        print
 
     html = """\
     <html><body>

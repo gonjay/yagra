@@ -38,12 +38,12 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     <div class="row">
     <div class="col-md-4">
     <h1>Yagra</h1>
-    <h2>Welcome, %s</h2>
-
-    <img src="/avatar/%s" alt="">
+    <h3>Welcome, %s</h3>
+    <img src="/avatar/%s" onerror="javascript:this.src='/avatar/default.png'";>
+    <br><br>
 
     <form enctype="multipart/form-data" action="/cgi-bin/yagra.py" accept-charset="UTF-8" method="post">
-    <div class="form-group"><label for="user_avatar">Avatar</label><br>
+    <div class="form-group"><label for="user_avatar">Upload Avatar</label><br>
     <input class="form-control" type="file" value="" name="avatar"></div>
 
     <div class="form-group">
@@ -51,7 +51,7 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     </div>
     </form>
 
-    <a href="/cgi-bin/sign_in.py" class="btn btn-danger">Sign out</a><br>
+    <a href="/cgi-bin/sign_in.py" class="btn">Sign out</a><br>
 
     </div>
     </div>

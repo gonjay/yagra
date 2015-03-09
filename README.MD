@@ -4,6 +4,25 @@
 - 上传头像
 - 密码加盐存储
 
+# 说明
+
+`sign_in.py sign_up.py yagra.py` 能处理 GET 和 POST 请求，对应了表单的获取和提交。
+
+```
+Method	URL						Params
+GET    /cgi-bin/sign_in.py 						  # 获取登录的表单
+POST   /cgi-bin/sign_in.py 	email,password  	  # 提交登录的表单
+GET    /cgi-bin/sign_up.py 						  # 获取注册的表单
+POST   /cgi-bin/sign_up.py  email,psw,confirm_psw # 提交注册的表单
+GET    /cgi-bin/yagra.py  						  # 获取主页面
+POST   /cgi-bin/yagra.py 	avatar(file) 		  # 提交上传或更新头像的表单
+```
+
+头像地址的获取
+```python
+url = "http://yagra.com/avatar/%s" % hashlib.md5("example@163.com").hexdigest()
+```
+
 # 依赖
 
 - Python2.7

@@ -1,21 +1,17 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import sha, time, Cookie, os, cgi
+import cgi, Cookie, os
 import cgitb; cgitb.enable()
+import lib
 from user import User
 
 cookie = Cookie.SimpleCookie()
 string_cookie = os.environ.get('HTTP_COOKIE')
 
-
-def get_secret(uid):
-    return sha.new("df29df0cb8df7c38143cb9344ba86510a5213bdc" + str(uid)).hexdigest()
-
-
 def sign_in():
     print "Status: 303 See other"
     print "Location: /cgi-bin/sign_in.py"
-    print # to end the CGI response headers.
+    print
 
 if not string_cookie:
     sign_in()
@@ -23,7 +19,7 @@ else:
     cookie.load(string_cookie)
     secret = cookie.get('secret').value
     uid = cookie.get('uid').value
-    if secret != get_secret(uid):
+    if secret != lib.get_secret(uid):
         sign_in()
 
 user = User()
@@ -64,15 +60,7 @@ elif os.environ['REQUEST_METHOD'] == 'POST':
         message = 'No file was selected'
     else:
         fileitem = form['avatar']
-        if fileitem.filename:
-            fn = user.get_avatar()
-            file_dir_path = os.path.join("./", "file")
-            if not os.path.isdir(file_dir_path):
-                os.makedirs(file_dir_path)
-            open(file_dir_path + "/" + fn, 'wb').write(fileitem.file.read())
-            message = 'Your avatar was uploaded successfully'
-        else:
-            message = 'No file was uploaded'
+        message = user.save_avatar(fileitem)
 
     html = """\
     <html><body>

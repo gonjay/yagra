@@ -1,12 +1,16 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import sha, random, string, sys, re, hashlib
+import sha, random, string, sys, re, hashlib, os
+from lib import db_config as config
 
 class User():
     """docstring for User"""
     def __init__(self):
         import MySQLdb as mdb
-        self.db = mdb.connect('localhost', 'yagra', '123456', 'yagra')
+        self.db = mdb.connect(config['host'],
+            config['user'],
+            config['password'],
+            config['db'])
         self.cur = self.db.cursor()
 
     def query(self, sql):
@@ -59,5 +63,13 @@ class User():
             self.id = self.cur.lastrowid
             return True
 
-    def save_avatar(self):
-        pass
+    def save_avatar(self, fileitem):
+        if fileitem.filename:
+            fn = self.get_avatar()
+            file_dir_path = os.path.join("./", "file")
+            if not os.path.isdir(file_dir_path):
+                os.makedirs(file_dir_path)
+            open(file_dir_path + "/" + fn, 'wb').write(fileitem.file.read())
+            return 'Your avatar was uploaded successfully'
+        else:
+            return 'No file was uploaded'

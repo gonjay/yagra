@@ -1,6 +1,7 @@
 #!/Users/GonJay/tmp/env/bin/python
 
 import os, cgi, Cookie, sha
+import lib
 from user import User
 
 if os.environ['REQUEST_METHOD'] == 'GET':
@@ -44,7 +45,7 @@ elif os.environ['REQUEST_METHOD'] == 'POST':
 
     if result is True:
         cookie = Cookie.SimpleCookie()
-        secret = sha.new("df29df0cb8df7c38143cb9344ba86510a5213bdc" + str(user.id)).hexdigest()
+        secret = lib.get_secret(user.id)
         cookie['secret'] = secret
         cookie['uid'] = user.id
         print cookie

@@ -1,8 +1,12 @@
 #!/Users/GonJay/tmp/env/bin/python
 
-import os, cgi, Cookie, sha
+import os, cgi, Cookie
+import lib
 from user import User
 cookie = Cookie.SimpleCookie()
+
+cookie['secret'] = ''
+cookie['uid'] = ''
 
 if os.environ['REQUEST_METHOD'] == 'GET':
     html = """\
@@ -33,8 +37,6 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     </div>
     </body></html>
     """
-    cookie['secret'] = ''
-    cookie['uid'] = ''
 elif os.environ['REQUEST_METHOD'] == 'POST':
     form = cgi.FieldStorage()
     email = form.getvalue('email')
@@ -42,21 +44,20 @@ elif os.environ['REQUEST_METHOD'] == 'POST':
     user = User()
     result = user.login(email, password)
 
-    if result:
-        secret = sha.new("df29df0cb8df7c38143cb9344ba86510a5213bdc" + str(user.id)).hexdigest()
-        cookie['secret'] = secret
+    if result is not None:
+        cookie['secret'] = lib.get_secret(user.id)
         cookie['uid'] = user.id
         print cookie
         print "Status: 303 See other"
         print "Location: /cgi-bin/yagra.py"
-        print # to end the CGI response headers.
+        print
 
     html = """\
     <html><body>
-    <h1>Password or Email incorrect</h1>
+    <h1>Password or Email incorrect %s</h1>
     <a href="/cgi-bin/sign_in.py">Back</a>
     </body></html>
-    """
+    """ % result
 
 print cookie
 print "Content-Type: text/html\n"

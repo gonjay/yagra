@@ -1,4 +1,4 @@
-#!/Users/GonJay/tmp/env/bin/python
+#!/usr/bin/env python
 
 import os
 import cgi

@@ -1,5 +1,3 @@
-#!/Users/GonJay/tmp/env/bin/python
-
 import sha
 
 # Replae secret_token when deploy

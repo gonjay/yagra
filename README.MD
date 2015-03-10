@@ -1,4 +1,4 @@
-# 功能 & 特性
+# Yagra 功能 & 特性
 
 - 登录、注册、登出
 - 上传头像
@@ -18,7 +18,7 @@ GET    /cgi-bin/yagra.py  						  # 获取主页面
 POST   /cgi-bin/yagra.py 	avatar(file) 		  # 提交上传或更新头像的表单
 ```
 
-头像地址的获取
+头像访问地址的 API
 ```python
 url = "http://yagra.com/avatar/%s" % hashlib.md5("example@163.com").hexdigest()
 ```

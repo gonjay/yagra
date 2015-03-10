@@ -1,5 +1,3 @@
-#!/Users/GonJay/tmp/env/bin/python
-
 import os
 import sys
 import sha

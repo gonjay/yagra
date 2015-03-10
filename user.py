@@ -54,12 +54,14 @@ class User():
         else:
             return None
 
-    def create(self, email, password):
+    def create(self, email, password, password_confirm):
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return "Email incorrect"
         if len(password) < 6:
             return "Password too short"
-        elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            return "Email incorrect"
-        elif self.find_by_email(email):
+        if password != password_confirm:
+            return "Twice password not match"
+        if self.find_by_email(email):
             return "Email %s has been registered" % email
         else:
             strs = string.ascii_uppercase + string.digits

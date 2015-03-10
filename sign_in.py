@@ -41,8 +41,8 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     """
 elif os.environ['REQUEST_METHOD'] == 'POST':
     form = cgi.FieldStorage()
-    email = form.getvalue('email')
-    password = form.getvalue('password')
+    email = form.getvalue('email', '')
+    password = form.getvalue('password', '')
     user = User()
     result = user.login(email, password)
 
@@ -56,10 +56,10 @@ elif os.environ['REQUEST_METHOD'] == 'POST':
 
     html = """\
     <html><body>
-    <h1>Password or Email incorrect %s</h1>
+    <h1>Password or Email incorrect</h1>
     <a href="/cgi-bin/sign_in.py">Back</a>
     </body></html>
-    """ % result
+    """
 
 print cookie
 print "Content-Type: text/html\n"

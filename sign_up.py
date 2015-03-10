@@ -25,7 +25,7 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     <input class="form-control" type="password" name="password" id="user_password"></div>
 
     <div class="form-group"><label for="user_confirm_password">Confirm password</label><br>
-    <input class="form-control" type="password" name="password_confirmation" id="user_password_confirmation"></div>
+    <input class="form-control" type="password" name="password_confirm" id="user_password_confirmation"></div>
 
     <div class="form-group">
     <input type="submit" name="commit" value="Sign up" class="btn btn-primary">
@@ -40,10 +40,11 @@ if os.environ['REQUEST_METHOD'] == 'GET':
     """
 elif os.environ['REQUEST_METHOD'] == 'POST':
     form = cgi.FieldStorage()
-    email = form.getvalue('email')
-    password = form.getvalue('password')
+    email = form.getvalue('email', '')
+    password = form.getvalue('password', '')
+    password_confirm = form.getvalue('password_confirm', '')
     user = User()
-    result = user.create(email, password)
+    result = user.create(email, password, password_confirm)
 
     if result is True:
         cookie = Cookie.SimpleCookie()

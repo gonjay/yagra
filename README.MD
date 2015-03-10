@@ -73,14 +73,14 @@ Directory:
 
 4. 选择 Database
 
-```sql
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `salt` varchar(255) DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
-```
+	```sql
+	CREATE TABLE `user` (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `email` varchar(255) NOT NULL,
+	  `salt` varchar(255) DEFAULT NULL,
+	  `token` varchar(255) DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+	```
 
 5. 修改配置文件 lib.py 中的数据库配置

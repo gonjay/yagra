@@ -73,12 +73,15 @@ class User():
             return True
 
     def save_avatar(self, fileitem):
+        extension = os.path.splitext(fileitem.filename)[1]
+        if extension not in ['.jpg', '.png']:
+            return "Only .jpg and .png allowed"
         if fileitem.filename:
             fn = self.get_avatar()
             file_dir_path = os.path.join("./", "file")
             if not os.path.isdir(file_dir_path):
                 os.makedirs(file_dir_path)
             open(file_dir_path + "/" + fn, 'wb').write(fileitem.file.read())
-            return 'Your avatar was uploaded successfully'
+            return "Your avatar was uploaded successfully"
         else:
-            return 'No file was uploaded'
+            return "No file was uploaded"

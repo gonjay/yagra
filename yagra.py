@@ -45,7 +45,7 @@ if os.environ['REQUEST_METHOD'] == 'GET':
 
     <form enctype="multipart/form-data" action="/cgi-bin/yagra.py" accept-charset="UTF-8" method="post">
     <div class="form-group"><label for="user_avatar">Upload Avatar</label><br>
-    <input class="form-control" type="file" value="" name="avatar"></div>
+    <input class="form-control" type="file" value="" name="avatar" accept="image/*"></div>
 
     <div class="form-group">
     <input type="submit" name="commit" value="Submit" class="btn btn-primary">

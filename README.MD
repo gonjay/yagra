@@ -20,7 +20,7 @@ POST   /cgi-bin/yagra.py 	avatar(file) 		  # 提交上传或更新头像的表�
 
 头像访问地址的 API
 ```python
-url = "http://yagra.com/avatar/%s" % hashlib.md5("example@163.com").hexdigest()
+url = "http://yagra.cc/avatar/%s" % hashlib.md5("example@163.com").hexdigest()
 ```
 
 # 依赖

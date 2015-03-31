@@ -33,13 +33,13 @@ url = "http://yagra.cc/avatar/%s" % hashlib.md5("example@163.com").hexdigest()
 
 alias_module:
 ```
-ScriptAlias /cgi-bin/ "/path/to/project/"
+ScriptAlias /cgi-bin/ "/path/to/project/yagra"
 Alias /avatar "/path/to/project/file"
 ```
 
 Directory:
 ```
-<Directory "/path/to/project/">
+<Directory "/path/to/project/yagra">
     Options Indexes FollowSymLinks MultiViews +ExecCGI
     AllowOverride None
     Options None

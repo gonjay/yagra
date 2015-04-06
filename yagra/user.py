@@ -78,7 +78,7 @@ class User():
             return "Only .jpg and .png allowed"
         if fileitem.filename:
             fn = self.get_avatar()
-            file_dir_path = os.path.join("./", "file")
+            file_dir_path = os.path.join("../", "file")
             if not os.path.isdir(file_dir_path):
                 os.makedirs(file_dir_path)
             open(file_dir_path + "/" + fn, 'wb').write(fileitem.file.read())

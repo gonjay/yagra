@@ -23,7 +23,9 @@ class User(object):
         self.password = kwargs.get("email")
         self.salt = kwargs.get("salt")
         self.token = kwargs.get("token")
+        self.errors = []
 
+    @staticmethod
     def query_user(sql):
         cur.execute(sql)
         row = cur.fetchone()
@@ -36,6 +38,7 @@ class User(object):
                 )
             return user
 
+    @staticmethod
     def insert_user(email, password):
         strs = string.ascii_uppercase + string.digits
         salt = ''.join(random.choice(strs) for _ in range(10))
@@ -44,10 +47,29 @@ class User(object):
         "values ('%s', '%s', '%s')" % (email, salt, token)
         cur.execute(sql)
         db.commit()
-        user = User(
-            id=self.cur.lastrowid, email=email,
-            salt=salt, token=token
-            )
+        return int(cur.lastrowid)
+
+    @staticmethod
+    def find_by_id(id):
+        sql = "select * from user where id=%s limit 1" % id
+        return User.query_user(sql)
+
+    @staticmethod
+    def find_by_email(email):
+        sql = "select * from user where email='%s' limit 1" % email
+        return User.query_user(sql)
+
+    @staticmethod
+    def create(**kwargs):
+        user = User(**kwargs)
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", user.email):
+            user.errors.append("Email incorrect")
+        if len(user.password) < 6:
+            user.errors.append("Password too short")
+        if User.find_by_email(user.email):
+            user.errors.append("Email %s has been registered" % user.email)
+        if len(user.errors) < 1:
+            user.save()
         return user
 
     def update(self):
@@ -60,19 +82,11 @@ class User(object):
         db.commit()
         return self
 
-    def find_by_id(id):
-        sql = "select * from user where id=%s limit 1" % id
-        return query_user(sql)
-
-    def find_by_email(email):
-        sql = "select * from user where email='%s' limit 1" % email
-        return query_user(sql)
-
     def get_avatar(self):
         return hashlib.md5(self.email).hexdigest()
 
     def login(self, email, password):
-        if find_by_email(email):
+        if User.find_by_email(email):
             token = sha.new(self.salt + password).hexdigest()
             if self.token != token:
                 return None
@@ -81,23 +95,9 @@ class User(object):
         else:
             return None
 
-    def create(**kwargs):
-        user = User(kwargs)
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", user.email):
-            user.errors.append("Email incorrect")
-        if len(user.password) < 6:
-            user.errors.append("Password too short")
-        if find_by_email(email):
-            user.errors.append("Email %s has been registered" % email)
-        if len(user.errors) < 1:
-            return user.save()
-        else:
-            return user
-
     def save(self):
-        user = find_by_id(self.id)
-        if user is None:
-            return insert_user(self.email, self.password)
+        if self.id is None or User.find_by_id(self.id) is None:
+            self.id = User.insert_user(self.email, self.password)
         else:
             return self.update()
 

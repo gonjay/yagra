@@ -9,8 +9,7 @@ handlers = [
     (r"/", handler.index.MainHandler),
 
     (r"/sign_in", handler.session.SessionHandler),
-    (r"/sign_up", handler.user.UserHandler),
     (r"/logout", handler.session.SessionHandler),
-
+    (r"/sign_up", handler.user.UserHandler),
     (r"/user/avatar", handler.user.UserHandler),
 ]

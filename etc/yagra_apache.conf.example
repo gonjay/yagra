@@ -1,0 +1,27 @@
+<VirtualHost *:80>                             
+    ServerAdmin admin@yagra.cc
+    DocumentRoot /path/to/project/
+    ServerName *
+    AddHandler cgi-script .py
+    DirectoryIndex main.py
+    Alias /avatar "/path/to/project/file"
+    AddType text/html .py
+    AddType image/x-icon .ico
+
+    Redirect 301 /yagra /
+
+    <Directory />
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch -Indexes
+        Order allow,deny
+        Allow from all
+
+        <IfModule mod_rewrite.c>
+                RewriteEngine on
+                RewriteCond %{REQUEST_FILENAME} !-f
+                RewriteCond %{REQUEST_FILENAME} !-d
+                RewriteRule ^(.*)$ main.py/$1 [NC,L]
+        </IfModule>
+    </Directory>
+
+</VirtualHost>

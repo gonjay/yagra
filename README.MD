@@ -74,7 +74,7 @@ Directory:
 4. 选择 Database
 
 	```sql
-	CREATE TABLE `user` (
+	CREATE TABLE `users` (
 	  `id` int(11) NOT NULL AUTO_INCREMENT,
 	  `email` varchar(255) NOT NULL,
 	  `salt` varchar(255) DEFAULT NULL,

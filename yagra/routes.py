@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import handler.index
-import handler.session
-import handler.user
+import handler.sessions
+import handler.users
 
 handlers = [
     (r"/", handler.index.MainHandler),
 
-    (r"/sign_in", handler.session.SessionHandler),
-    (r"/logout", handler.session.SessionHandler),
-    (r"/sign_up", handler.user.UserHandler),
-    (r"/user/avatar", handler.user.UserHandler),
+    (r"/sign_in", handler.sessions.SessionHandler),
+    (r"/logout", handler.sessions.SessionHandler),
+    (r"/sign_up", handler.users.UserHandler),
+    (r"/user/avatar", handler.users.UserHandler),
 ]

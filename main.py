@@ -1,15 +1,14 @@
 #! /usr/bin/python
 #! -*- coding:utf-8 -*-
 
-import os
-import cgi
-import Cookie
-import yagra.lib as lib
+from yagra.application.app import App
+from yagra import routes
 
-print "Content-Type: text/html\n"
-print os.environ
-print lib.db_config
+def start():
+    app = App()
+    app.add_handlers(routes.handlers)
+    app.run()
 
-get "/" to mainpage.index
-get "/sign_in" to Session.new
-post "sign_in" to Session.create
+
+if __name__ == '__main__':
+    start()

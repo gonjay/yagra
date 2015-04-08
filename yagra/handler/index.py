@@ -3,8 +3,7 @@
 
 from base import BaseHandler
 
-class MainHandler(object):
+class MainHandler(BaseHandler):
     """docstring for MainHandler"""
-    def __init__(self, arg):
-        super(MainHandler, self).__init__()
-        self.arg = arg
+    def get(self):
+        self.redirect_to("/sign_in")

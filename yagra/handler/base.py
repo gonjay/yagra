@@ -28,17 +28,21 @@ class BaseHandler(object):
 
     def gen_header_reponse(self):
         """Generate header response"""
-        header_reponse = "Status: %d %s" % (
+        header_reponse = ["Status: %d %s" % (
             self.status_code,
-            httplib.responses.get(self.status_code))
+            httplib.responses.get(self.status_code))]
         for k, v in self.headers.iteritems():
             header_reponse.append("%s: %s" % (k, v))
-        return header_reponse + "\r\n\r\n"
+        return "\n".join(header_reponse) + "\r\n\r\n"
 
     def send_error(self, status_code=405):
-        self.status_code = status_code
-        sys.stdout.write(self.gen_header_reponse())
-        raise HTTPError(self.status_code)
+        self.render("<h1>Oooops</h1>",
+            status_code=status_code)
+        raise HTTPError(status_code)
+
+    def redirect_to(self, path):
+        self.set_header("Location", path)
+        self.render("", status_code=303)
 
     def get(self):
         self.send_error()
@@ -52,7 +56,7 @@ class BaseHandler(object):
     def delete(self):
         self.send_error()
 
-    def render(self, file, status_code=200):
+    def render(self, file, status_code=200, **kwargs):
         self.status_code = status_code
         sys.stdout.write(self.gen_header_reponse())
         sys.stdout.write(file)

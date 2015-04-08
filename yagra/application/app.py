@@ -16,6 +16,8 @@ class App(object):
         self.handlers = handlers
 
     def run(self):
+        # self.uri = "/sign_in"
+        # self.method = "POST"
         handler = None
         for (k, v) in self.handlers:
             if k == self.uri:

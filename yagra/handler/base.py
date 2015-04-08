@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import httplib
+import sys
 
 class HTTPError(Exception):
     """docstring for HTTPError"""
@@ -15,29 +16,63 @@ class HTTPError(Exception):
             httplib.responses.get(self.status_code))
 
 
-
 class BaseHandler(object):
     """Base Handler to deal with CGI request"""
     def __init__(self, app):
         super(BaseHandler, self).__init__()
         self.app = app
+        self.headers = {}
+
+    def set_header(self, k, v):
+        self.headers[k] = v
+
+    def gen_header_reponse(self):
+        """Generate header response"""
+        header_reponse = "Status: %d %s" % (
+            self.status_code,
+            httplib.responses.get(self.status_code))
+        for k, v in self.headers.iteritems():
+            header_reponse.append("%s: %s" % (k, v))
+        return header_reponse + "\r\n\r\n"
+
+    def send_error(self, status_code=405):
+        self.status_code = status_code
+        sys.stdout.write(self.gen_header_reponse())
+        raise HTTPError(self.status_code)
 
     def get(self):
-        raise HTTPError(405)
+        self.send_error()
 
     def post(self):
-        raise HTTPError(405)
+        self.send_error()
 
     def update(self):
-        raise HTTPError(405)
+        self.send_error()
 
     def delete(self):
-        raise HTTPError(405)
+        self.send_error()
+
+    def render(self, file, status_code=200):
+        self.status_code = status_code
+        sys.stdout.write(self.gen_header_reponse())
+        sys.stdout.write(file)
 
     def execute(self, method):
-        pass
+        if method.lower() == "get":
+            self.get()
+        elif method.lower() == "post":
+            self.post()
+        elif method.lower() == "update":
+            self.update()
+        elif method.lower() == "delete":
+            self.delete()
+        else:
+            self.send_error()
+
 
 class ErrorHandler(BaseHandler):
     """docstring for ErrorHandler"""
+
     def execute(self, method):
-        raise HTTPError(404)
+        self.send_error(status_code=404)
+

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys, os
 import httplib
-import sys
 
 class HTTPError(Exception):
     """docstring for HTTPError"""
@@ -56,10 +56,16 @@ class BaseHandler(object):
     def delete(self):
         self.send_error()
 
-    def render(self, file, status_code=200, **kwargs):
+    def render(self, content, status_code=200, **kwargs):
         self.status_code = status_code
         sys.stdout.write(self.gen_header_reponse())
-        sys.stdout.write(file)
+        sys.stdout.write(content)
+
+    def render_tplates(self, filename, **kwargs):
+        filepath = os.path.join("yagra/templates/users", "profile.html")
+        with open(filepath, 'r') as myfile:
+            content = myfile.read()
+        self.render(content % kwargs)
 
     def execute(self, method):
         if method.lower() == "get":

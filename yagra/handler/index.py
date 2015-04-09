@@ -6,4 +6,4 @@ from base import BaseHandler
 class MainHandler(BaseHandler):
     """docstring for MainHandler"""
     def get(self):
-        self.redirect_to("/sign_in")
+        self.render_tplates("users/profile.html", email="user.email", avatar_src="user.getAvatar()")

@@ -10,7 +10,7 @@ class App(object):
         super(App, self).__init__()
         env = os.environ
         self.TEMPLATES_DIR = "yagra/templates"
-        self.uri = env.get("REQUEST_URI")
+        self.uri = env.get("REQUEST_URI").split("?")[0]
         self.method = env.get("REQUEST_METHOD")
 
     def add_handlers(self, handlers):

@@ -3,6 +3,7 @@
 
 import sys, os
 import sha, shelve, time, Cookie
+import cgi
 import httplib
 from ..lib.user import User
 
@@ -25,6 +26,7 @@ class BaseHandler(object):
         self.app = app
         self.headers = {"Content-Type": "text/html"}
         self.session = Session()
+        self.form = cgi.FieldStorage()
 
     def set_header(self, k, v):
         self.headers[k] = v

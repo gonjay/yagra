@@ -8,7 +8,7 @@ import random
 import string
 import re
 import hashlib
-from lib import db_config as config
+from config import db_config as config
 
 import MySQLdb as mdb
 db = mdb.connect(

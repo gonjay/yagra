@@ -6,4 +6,4 @@ from base import BaseHandler
 class SessionHandler(BaseHandler):
 
     def get(self):
-        self.render("<h1>hihi</h1>")
+        self.render_tplates("sessions/new.html")

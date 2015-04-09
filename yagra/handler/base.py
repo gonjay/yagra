@@ -21,7 +21,7 @@ class BaseHandler(object):
     def __init__(self, app):
         super(BaseHandler, self).__init__()
         self.app = app
-        self.headers = {}
+        self.headers = {"Content-Type": "text/html"}
 
     def set_header(self, k, v):
         self.headers[k] = v

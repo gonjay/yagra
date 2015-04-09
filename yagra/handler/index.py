@@ -6,4 +6,7 @@ from base import BaseHandler
 class MainHandler(BaseHandler):
     """docstring for MainHandler"""
     def get(self):
-        self.render_tplates("users/profile.html", email="user.email", avatar_src="user.getAvatar()")
+        self.render_tplates(
+            "users/profile.html",
+            email="user.email",
+            avatar_src="user.getAvatar()")

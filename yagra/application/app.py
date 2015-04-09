@@ -9,6 +9,7 @@ class App(object):
     def __init__(self):
         super(App, self).__init__()
         env = os.environ
+        self.TEMPLATES_DIR = "yagra/templates"
         self.uri = env.get("REQUEST_URI")
         self.method = env.get("REQUEST_METHOD")
 
@@ -16,8 +17,6 @@ class App(object):
         self.handlers = handlers
 
     def run(self):
-        # self.uri = "/sign_in"
-        # self.method = "POST"
         handler = None
         for (k, v) in self.handlers:
             if k == self.uri:

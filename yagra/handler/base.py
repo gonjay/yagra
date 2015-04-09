@@ -62,7 +62,7 @@ class BaseHandler(object):
         sys.stdout.write(content)
 
     def render_tplates(self, filename, **kwargs):
-        filepath = os.path.join("yagra/templates/users", "profile.html")
+        filepath = os.path.join(self.app.TEMPLATES_DIR, filename)
         with open(filepath, 'r') as myfile:
             content = myfile.read()
         self.render(content % kwargs)

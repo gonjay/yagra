@@ -46,7 +46,7 @@ class User(object):
         strs = string.ascii_uppercase + string.digits
         salt = ''.join(random.choice(strs) for _ in range(10))
         token = sha.new(salt + password).hexdigest()
-        sql = "insert into user (email, salt, token) " \
+        sql = "insert into users (email, salt, token) " \
         "values ('%s', '%s', '%s')" % (email, salt, token)
         cur.execute(sql)
         db.commit()
@@ -54,12 +54,12 @@ class User(object):
 
     @staticmethod
     def find_by_id(id):
-        sql = "select * from user where id=%s limit 1" % id
+        sql = "select * from users where id=%s limit 1" % id
         return User.query_user(sql)
 
     @staticmethod
     def find_by_email(email):
-        sql = "select * from user where email='%s' limit 1" % email
+        sql = "select * from users where email='%s' limit 1" % email
         return User.query_user(sql)
 
     @staticmethod
@@ -75,6 +75,18 @@ class User(object):
             user.save()
         return user
 
+    @staticmethod
+    def auth(email, password):
+        user = User.find_by_email(email)
+        if user:
+            token = sha.new(user.salt + password).hexdigest()
+            if user.token != token:
+                return None
+            else:
+                return user
+        else:
+            return None
+
     def update(self):
         strs = string.ascii_uppercase + string.digits
         salt = ''.join(random.choice(strs) for _ in range(10))
@@ -88,16 +100,6 @@ class User(object):
     def get_avatar(self):
         return hashlib.md5(self.email).hexdigest()
 
-    def login(self, email, password):
-        if User.find_by_email(email):
-            token = sha.new(self.salt + password).hexdigest()
-            if self.token != token:
-                return None
-            else:
-                return self
-        else:
-            return None
-
     def save(self):
         if self.id is None or User.find_by_id(self.id) is None:
             self.id = User.insert_user(self.email, self.password)
@@ -110,10 +112,8 @@ class User(object):
             return "Only .jpg and .png allowed"
         if fileitem.filename:
             fn = self.get_avatar()
-            file_dir_path = os.path.join("../", "file")
-            if not os.path.isdir(file_dir_path):
-                os.makedirs(file_dir_path)
-            open(file_dir_path + "/" + fn, 'wb').write(fileitem.file.read())
+            file_dir_path = os.path.join("file", fn)
+            open(file_dir_path, 'wb').write(fileitem.file.read())
             return "Your avatar was uploaded successfully"
         else:
             return "No file was uploaded"

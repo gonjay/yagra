@@ -41,7 +41,10 @@ class BaseHandler(object):
 
     def current_user(self):
         uid = self.session.data.get("uid")
-        return User.find_by_id(uid)
+        if uid:
+            return User.find_by_id(uid)
+        else:
+            return None
 
     def login_user(self, user):
         self.session.data["uid"] = user.id
